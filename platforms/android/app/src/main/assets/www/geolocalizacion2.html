@@ -1,0 +1,160 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js?ver=3.1.2'></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?&sensor=true"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwuaxDdaUmOwR3qbLhabkGWqj-SQXnrnk&libraries=geometry"></script>
+<script type="text/javascript" src="js/geturi.js"></script>
+<script type="text/javascript"> 
+		
+		function inicializar() {
+			alert("Recuerda encender tu GPS");
+			
+			if (navigator.geolocation)
+			{
+			    //Hago el CallBack a mostrarLocalizacion
+				
+			}
+			else{
+			    //Caso contraio muestro error
+				alert("Su navegador no soporta Geolocalizacion");
+				}
+		}
+
+	    function mostrarLocalizacion(posicion)
+	     {
+            
+			var latitud = posicion.coords.latitude;
+			imprimir(latitud);
+			var longitud = posicion.coords.longitude;
+			imprimir(longitud);
+			
+			var url="http://bahiahorizonte.cl/sm/testjson.php";
+			$.getJSON(url,function(result){
+			console.log(result);
+			$.each(result, function(i, field){
+				var id=field.id;
+				var pais=field.pais;
+				var deporte=field.deporte;
+				var sexo=field.sexo;
+				var ciudad=field.ciudad;
+				var x=field.x;
+				var y=field.y;
+				var pos = new google.maps.LatLng(x,y);
+				var pos2 = new google.maps.LatLng(latitud,longitud);
+				
+				//alert("xdebd"+x);
+				//alert("ydebd"+y);
+				//alert("posicionobtenida"+pos2);
+				//alert("distancia"+google.maps.geometry.spherical.computeDistanceBetween(pos,pos2));
+				var distancia = google.maps.geometry.spherical.computeDistanceBetween(pos,pos2);
+				//alert("esta"+distancia);
+				var radio = decodeURI(getUrlVars()["radio"]);
+				if(distancia < radio)
+				{
+				/////////La distancia se mide en metros
+				$("#listview").append(pais +"&nbsp;&nbsp;||&nbsp;&nbsp;"+ deporte 
+				+"&nbsp;&nbsp;||&nbsp;&nbsp;"+ sexo +"&nbsp;&nbsp;||&nbsp;&nbsp;"+ 
+				ciudad+"<a href=''  onclick='ver_jugador("+id+")'>Ver</a>"+"<br>");
+				}
+				
+			});
+			});
+			
+	      }
+		function imprimir(latitud)
+	     {
+            
+			//alert(latitud);
+
+			
+	     }
+
+	    function manejadorDeError(error) {
+
+		   switch(error.code)
+            {
+                case error.PERMISSION_DENIED: alert("El usuario no permite compartir datos de geolocalizacion");
+                break;
+
+                case error.POSITION_UNAVAILABLE: alert("Imposible detectar la posicio actual");
+                break;
+
+                case error.TIMEOUT: alert("La posicion debe recuperar el tiempo de espera");
+                break;
+
+                default: alert("Error desconocido");
+                break;
+            }
+			
+      }
+      google.maps.event.addDomListener(window, 'load', inicializar);
+	  
+      
+	
+	  $(document).ready(function()
+		{
+			
+			navigator.geolocation.getCurrentPosition(mostrarLocalizacion,manejadorDeError);
+			
+			
+			
+		
+		});
+	function ver_jugador(id) {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+    window.location.assign("entidad_partido_inicio_jugador.html?id="+id+"&myvar2="+myvar2)
+	}
+	
+	function historial() {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+    window.location.assign("historial.html?id="+myvar2)
+	}
+	function gps() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("geolocalizacion.html?id="+myvar2)
+	}
+	function home() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("readjson.html?myvar="+myvar2)
+	}
+	function perfil() {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+   
+	
+	var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+	$.getJSON(url,function(result){
+	console.log(result);
+	$.each(result, function(i, field){
+	var id=field.id;
+	window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+id)
+	});
+	});
+ 
+	}
+	  
+</script>
+</head>
+<body>
+<div data-role="page">
+	<div data-role="header">
+	<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+		<a href="" class="button button-clear" onclick="home();">Home</a>
+		<a href="index.html" class="button button-clear" onclick="gps();">Gps</a>
+		<a href="perfil.html" class="button button-clear" onclick="perfil();">Perfil</a>
+		<a href="index.html" class="button button-clear" onclick="historial();">Historial</a>
+		<a href="index.html" class="button button-clear">Cuenta</a>
+	</div><br><br>
+	</div>
+	<div data-role="content">
+		
+	</div>
+	<div data-role="footer"></div>
+</div>
+
+</body>
+</html>

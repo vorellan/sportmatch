@@ -1,0 +1,80 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/geturi.js"></script>
+<script type="text/javascript">
+
+function editar(id) {
+    window.location.assign("editar_partido.html?id="+id)
+}
+function ver(id) {
+    window.location.assign("entidad_partido_inicio.php?id="+id)
+}
+function eliminar(id) {
+    window.location.assign("eliminar_partido.php?id="+id)
+}
+function ver_jugador(id) {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+    window.location.assign("entidad_partido_inicio_jugador.html?id="+id+"&myvar2="+myvar2)
+}
+function ver(id) {
+    window.location.assign("entidad_partido_inicio.html?id="+id)
+}
+function historial() {
+	var myvar2 = decodeURI(getUrlVars()["id"]);
+    window.location.assign("historial.html?id="+myvar2)
+}
+function gps() {
+	var myvar2 = decodeURI(getUrlVars()["id"]);
+    window.location.assign("geolocalizacion.html?id="+myvar2)
+}
+function home() {
+		var myvar2 = decodeURI(getUrlVars()["id"]);
+		window.location.assign("readjson.html?myvar="+myvar2)
+	}
+function cerrar() {
+
+		window.location.assign("index.html")
+	}
+function perfil() {
+	var myvar2 = decodeURI(getUrlVars()["id"]);
+   
+	
+	var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+	$.getJSON(url,function(result){
+	console.log(result);
+	$.each(result, function(i, field){
+	var id=field.id;
+	window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+id)
+	});
+	});
+ 
+}
+ </script>
+</head>
+<body>
+<div data-role="page">
+	<div data-role="header">
+		<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+		<a href="" class="button button-clear" onclick="home();">Home</a>
+		<a href="index.html" class="button button-clear" onclick="gps();">Gps</a>
+		<a href="perfil.html" class="button button-clear" onclick="perfil();">Perfil</a>
+		<a href="index.html" class="button button-clear" onclick="historial();">Historial</a>
+		<a href="index.html" class="button button-clear">Cuenta</a>
+		</div><br><br>
+	</div>
+	<div data-role="content">
+		<div align="center">
+				<button type="submit" id="cerrar_sesion"  name="cerrar_sesion" onclick="cerrar();">Cerrar Sesion</button>
+		</div>
+		<div class="ui-grid-b" id="listview" align="center"></div>
+	</div>
+	<div data-role="footer"></div>
+</div>
+
+</body>
+</html>

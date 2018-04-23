@@ -1,0 +1,309 @@
+<?php
+include ("clases.php");
+?>
+<html>
+<head>
+<title>
+Entidad Partido
+</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/geturi.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/funciones1.js"></script>
+
+
+
+<script>
+	$(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 //alert(id);
+	 var url="http://bahiahorizonte.cl/sm/controller_entidad_partido.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 var local=result[0].nombre;
+	 $("#listview1").append(local);
+	 var visita=result[1].nombre;
+	 $("#listview2").append(visita);
+	 $.each(result, function(i, field){
+	 var id=field.id;
+	 var nombre=field.nombre;
+	 //$("#listview1").append(nombre2);
+	 });
+	 });
+	 });
+	 
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_marcador.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var puntos=field.puntos;
+	 var idequipo=field.equipo_id;
+	 //alert(idequipo);
+	 $("#marc1").append("<input type='text' id='marc3' value="+puntos+" name="+idequipo+"></input>");
+	 });
+	 });
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_marcador_visita.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var puntos=field.puntos;
+	 var idequipo=field.equipo_id;
+	 $("#marc2").append("<input type='text' id='marc4' value="+puntos+" name="+idequipo+"></input>");
+	 });
+	 });
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_nomina_local.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var nombre=field.nombre;
+	 var idjugador=field.id;
+	 var check='cheq';
+	 $("#nominalocal").append(nombre+"<a href=''><img border='0' align='center' src='img/perfil.png' width='50' height='50'></a>"+"<input type='checkbox' class='checklocal' name='' value="+idjugador+">"+"<br>");
+	 });
+	 });
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_nomina_visita.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var nombre=field.nombre;
+	 var idjugador=field.id;
+	 $("#nominavisita").append(nombre+"<a href=''><img border='0' align='center' src='img/perfil.png' width='50' height='50'></a>"+"<input type='checkbox' class='checkvisita' name='' value="+idjugador+">"+"<br>");
+	 });
+	 });
+	 });
+	
+	$(document).ready(function(){
+		formSubmit()
+		
+	})
+	
+	function formSubmit(){///SEGUIR CON ESTOOOOOOOOOOOOOOOOOOOOOOO
+		
+		$('#marcador').submit(function(e){
+			e.preventDefault()
+			var local = $('#marc3').val()
+			var visita = $('#marc4').val()
+			var idlocal = $('#marc3').attr("name");
+			var idvisita = $('#marc4').attr("name");	
+			alert("Marcador actualizado");
+		    var data = 'local='+local+'&visita='+visita+'&idlocal='+idlocal+'&idvisita='+idvisita;
+			//////////////CON JQUERY OBTENER ATRIBUTO ID DEL INPUT Y AHI GUARDAR LA VARIABLE PHP $IDLOCAL Y $IDVISITA
+			$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/insertar_marcador.php',
+				type: 'POST',
+				data:  data,
+				beforeSend: function(){
+					console.log('enviando datos')
+				},
+				success: function(resp){
+					console.log('resp')
+				}
+			})
+		})
+		
+		$('#asistencia').submit(function(e){
+			e.preventDefault()
+			var idpartido = decodeURI(getUrlVars()["id"]);
+			var url="http://bahiahorizonte.cl/sm/controller_nomina_local.php?id="+idpartido;
+			$.getJSON(url,function(result){
+			console.log(result);
+			$.each(result, function(i, field){
+				 var idjugador=field.id;
+				 alert(idjugador);
+				 var data2 = 'jugador='+idjugador+'&idpartidos='+idpartido;
+				///////PONER CODIGO QUE MANDE A INASISTENCIA
+				$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/insertar_inasistencia.php',
+				type: 'POST',
+				data:  data2,
+				beforeSend: function(){
+					console.log('enviando datos')
+				},
+				success: function(resp){
+					console.log('resp')
+				}
+				})
+				 $('.checklocal:checked').each(
+					function() {
+						alert("El checkbox con valor " + $(this).val() + " está seleccionado");
+						if($(this).val() == idjugador )
+						{	
+							var selec=$(this).val();
+							var data = 'seleccionado='+selec+'&idpartidos='+idpartido;
+							$.ajax({
+							url: 'http://bahiahorizonte.cl/sm/insertar_asistencia.php',
+							type: 'POST',
+							data:  data,
+							beforeSend: function(){
+								console.log('enviando datos')
+							},
+							success: function(resp){
+								console.log('resp')
+							}
+							})
+							
+							
+						}
+						
+
+					}
+				);
+			});
+			});
+			//////////////CON JQUERY OBTENER ATRIBUTO ID DEL INPUT Y AHI GUARDAR LA VARIABLE PHP $IDLOCAL Y $IDVISITA
+			
+		})	
+
+		$('#asistencia2').submit(function(e){
+			e.preventDefault()
+			var idpartido = decodeURI(getUrlVars()["id"]);
+
+			$('.checkvisita:checked').each(
+			function() {
+				alert("El checkbox con valor " + $(this).val() + " está seleccionado");
+				/////OBTENER EL ID DEL LOCAL Y PASARLO
+				var selec=$(this).val();
+				var data = 'seleccionado='+selec+'&idpartidos='+idpartido;
+				$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/insertar_asistencia.php',
+				type: 'POST',
+				data:  data,
+				beforeSend: function(){
+					console.log('enviando datos')
+				},
+				success: function(resp){
+					console.log('resp')
+				}
+			})
+				}
+			);
+			
+			//////////////CON JQUERY OBTENER ATRIBUTO ID DEL INPUT Y AHI GUARDAR LA VARIABLE PHP $IDLOCAL Y $IDVISITA
+			
+		})			
+	}
+	
+	function fin()
+	{
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("readjson.html?myvar="+myvar2)
+	}
+	function historial() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("historial.html?id="+myvar2)
+	}
+	function gps() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("geolocalizacion.html?id="+myvar2)
+	}
+	function home() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("readjson.html?myvar="+myvar2)
+	}
+	function perfil2() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+		$.getJSON(url,function(result){
+		console.log(result);
+		$.each(result, function(i, field){
+		var id=field.id;
+		window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+id)
+	});
+	});
+ 
+	}
+	
+</script>
+</head>
+<body>
+
+<div data-role="page">
+<div data-role="header">
+	
+</div>
+<div data-role="content" data-theme="e">
+	<div align="center" >
+	<br>
+	<br>
+	<br>
+	<form >
+	<input type="button"  value="Terminar"  onclick="fin()"/>
+	</form>
+	</div>
+
+	<br>
+	
+	<table align="left">
+		<tr align="center">
+		<td ><a href="" ><img border="0"  src="img/escudo.png" width="70" height="70"></a></td>
+		</tr>
+		<tr align="center">
+		<td id="listview1"></td>
+		</tr>
+		<tr align="center">
+		<td ><hr></td>
+		</tr>
+		<form id="asistencia">
+		<tr>
+		<td id="nominalocal"><input type="submit" value="Guardar Asistencia" onClick="alert('Asistencia guardada');"><br></td>
+		</tr>
+		
+		</form>
+	</table>
+	
+	<table align="right">
+		<tr align="center">
+		<td><a href=""><img border="0"  src="img/escudo.png" width="70" height="70"></a></td>
+		</tr>
+		<tr align="center">
+		<td id="listview2"></td>
+		</tr>
+		<tr align="center">
+		<td ><hr></td>
+		</tr>
+		<form id="asistencia2">
+		<tr>
+		<td id="nominavisita"><input type="submit" value="Guardar Asistencia" onClick="alert('Asistencia guardada');"><br></td>
+		</tr>
+		
+		</form>
+	</table>
+	
+	
+</div>
+<div data-role="footer">
+	
+
+</div>
+</div>
+
+
+
+
+
+
+</body>
+</html>

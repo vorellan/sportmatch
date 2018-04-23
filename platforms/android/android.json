@@ -1,0 +1,68 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {
+      "res/xml/config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"InAppBillingPlugin\"><param name=\"android-package\" value=\"com.smartmobilesoftware.inappbilling.InAppBillingPlugin\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "AndroidManifest.xml": {
+        "parents": {
+          "/manifest": [
+            {
+              "xml": "<uses-permission android:name=\"com.android.vending.BILLING\" />",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "res/values/billing_key_param.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<string name=\"billing_key_param\">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiosjqYfTnbOpuAzwTLaRViZPN1Z0awmhqgW+zIKljejzhgw3wUZyp66byKl8n6Bvenh9vO2HrNkZVAu4N8pElEqRUcqeGDIXR8Njnx1wzDwqTk2X3L7bzD9YLUufnd+oMdKOxBDpSFbj0IFGJtcpBY2PMF+i5rSyD4LXJXEQfWADiLwxOboyTCSrpArD+DkLzOOF3Bcmwxnt7++YEg6yZLAhhDTge3FVF+DdaXbSe4OUkYiFUYUKRBN7Ol60QPVvL00v7PymvuR6cFSP22IhWF2WrbL9vrR2Q+JpHrp0WGfSaJjv/3o+m4vknMObi8BhNx/c/8PIvfaROBCp2Alx0QIDAQAB</string>",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.mycompany.sportmatch"
+    },
+    "cc.fovea.cordova.purchase": {
+      "BILLING_KEY": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiosjqYfTnbOpuAzwTLaRViZPN1Z0awmhqgW+zIKljejzhgw3wUZyp66byKl8n6Bvenh9vO2HrNkZVAu4N8pElEqRUcqeGDIXR8Njnx1wzDwqTk2X3L7bzD9YLUufnd+oMdKOxBDpSFbj0IFGJtcpBY2PMF+i5rSyD4LXJXEQfWADiLwxOboyTCSrpArD+DkLzOOF3Bcmwxnt7++YEg6yZLAhhDTge3FVF+DdaXbSe4OUkYiFUYUKRBN7Ol60QPVvL00v7PymvuR6cFSP22IhWF2WrbL9vrR2Q+JpHrp0WGfSaJjv/3o+m4vknMObi8BhNx/c/8PIvfaROBCp2Alx0QIDAQAB",
+      "PACKAGE_NAME": "com.mycompany.sportmatch"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "id": "cc.fovea.cordova.purchase.InAppBillingPlugin",
+      "file": "plugins/cc.fovea.cordova.purchase/www/store-android.js",
+      "pluginId": "cc.fovea.cordova.purchase",
+      "clobbers": [
+        "store"
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-whitelist": "1.3.3",
+    "cc.fovea.cordova.purchase": "7.1.0"
+  }
+}

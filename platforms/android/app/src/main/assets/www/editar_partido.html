@@ -1,0 +1,243 @@
+<html>
+<head>
+<style type="text/css"> 
+  html { height: 100% } 
+  body { height: 100%; margin: 0px; padding: 0px } 
+  #map_canvas { height: 100% } 
+</style>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwuaxDdaUmOwR3qbLhabkGWqj-SQXnrnk&libraries=geometry"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/geturi.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+ $(document).ready(function()
+	 {
+		 var id = decodeURI(getUrlVars()["id"]);
+		 //alert(id);
+		 var url="http://bahiahorizonte.cl/sm/controller_editar_partido.php?id="+id;//aqui debieeria pasar el id
+		 $.getJSON(url,function(result){
+		 console.log(result);
+		 $.each(result, function(i, field){
+		 var deporte=field.deporte;
+		 var pais=field.pais;
+		 var deporte=field.deporte;
+		 var ciudad=field.ciudad;
+		 var nombrecancha=field.nombre_cancha;
+		 var dircancha=field.direccion_cancha;
+		 var cuota=field.cuota;
+		 var tipo_moneda=field.tipo_moneda;
+		 var fecha=field.fecha;
+		 var hora=field.hora;
+		 var sexo=field.sexo;
+		 var info_extra=field.info_extra;
+		 
+
+		 
+		 $("#deporte").append("<select  id='deporte1'><option value='Futbol'>Futbol</option><option value='Tenis'>Tenis</option><option value='Basquetball'>Basquetball</option><option value='Rugby'>Rugby</option><option value='Beisball'>Beisball</option><option value='Voleyball'>Voleyball</option><option value='Golf'>Golf</option><option value='Running'>Running</option><option value='Yoga'>Yoga</option><option value='Otro'>Otro</option></select>");
+		 $("#deporte1 option[value="+ deporte +"]").attr("selected",true);
+		 $("#pais").append("<input type='text' id='pais1'  value="+pais+" ></input>");
+		 $("#ciudad").append("<input type='text'  id='ciudad1' value="+ciudad+" ></input>");
+		 $("#nombrecancha").append("<input type='text' id='nombrecancha1' value="+nombrecancha+" ></input>");
+		 $("#dircancha").append("<input type='text'  id='dircancha1' value="+dircancha+" ></input>");
+		 $("#cuota").append("<input type='text'  id='cuota1' value="+cuota+" ></input>");
+		 $("#tipo_moneda").append("<input type='text'  id='tipo_moneda1' value="+tipo_moneda+" ></input>");
+		 $("#fecha").append("<input type='text'  id='fecha1'  name='fecha1' value="+fecha+" ></input>");
+		 $("#hora").append("<input type='text'  id='hora1' value="+hora+" ></input>");
+		 $("#sexo").append("<select  id='sexo1'><option value='Masculino'>Masculino</option><option value='Femenino'>Femenino</option><option value='Mixto'>Mixto</option></select>");
+		 $("#sexo1 option[value="+ sexo +"]").attr("selected",true);
+		 $("#info_extra").append("<textarea  id='info_extra1' value="+info_extra+" >"+info_extra+"</textarea>");
+		});
+		});
+	 
+	
+	
+	});
+	
+function getCoords(marker){ 
+	document.getElementById("loglat").innerHTML=marker.getPosition().lat(); 
+    document.getElementById("loglong").innerHTML=marker.getPosition().lng(); 
+
+
+} 
+function initialize() { 
+    var myLatlng = new google.maps.LatLng(-33.4430275,-70.66185489999998); 
+    var myOptions = { 
+        zoom: 16, 
+        center: myLatlng, 
+        mapTypeId: google.maps.MapTypeId.ROADMAP, 
+    } 
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions); 
+     
+   marker = new google.maps.Marker({ 
+          position: myLatlng, 
+          draggable: true, 
+          title:"Hello World!" 
+    }); 
+    google.maps.event.addListener(marker, "dragend", function() { 
+        getCoords(marker); 
+					
+					/*$( "#editar" ).click(function() {
+						alert(marker.getPosition().lat()+" "+marker.getPosition().lng());
+						});*/
+    }); 
+     
+    marker.setMap(map); 
+    //getCoords(marker); 
+     
+   
+  }
+  
+	
+function home(id) {
+    window.location.assign("readjson.html")
+}
+
+$(document).ready(function()
+{
+	$( "#editar" ).click(function() {
+		//alert( "Obteniendo valores" );
+		
+		var id = decodeURI(getUrlVars()["id"]);
+		var lat= $('#loglat').text();
+		var lng = $('#loglong').text();
+		var deporte = $('#deporte1').val();
+		var pais = $('#pais1').val();
+		var ciudad = $('#ciudad1').val();
+		var nombre_cancha = $('#nombrecancha1').val();
+		var dir_cancha = $('#dircancha1').val();
+		var cuota = $('#cuota1').val();
+		var tipo_moneda = $('#tipo_moneda1').val();
+		var fecha = $('#fecha1').val();
+		var hora = $('#hora1').val();
+		var sexo = $('#sexo1').val();
+		var info_extra = $('#info_extra1').val();
+		var data = 'id='+id+'&deporte='+deporte+'&pais='+pais+'&ciudad='+ciudad+'&nombre_cancha='+nombre_cancha+'&dir_cancha='+dir_cancha+'&cuota='+cuota+'&tipo_moneda='+tipo_moneda+'&fecha='+fecha+'&hora='+hora+'&sexo='+sexo+'&lat='+lat+'&lng='+lng+'&info_extra='+info_extra;
+		$.ajax({
+			url: 'http://bahiahorizonte.cl/sm/controller_edicion_partido.php',
+			type: 'POST',
+			data:  data,
+			beforeSend: function(){
+				console.log('enviando datos')
+			},
+			success: function(resp){
+				console.log('resp')
+			}
+		})
+		alert("datos editados");
+		 
+
+	});
+});
+$( function() {
+    $( "#fecha1" ).datepicker();
+} );
+	function historial() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("historial.html?id="+myvar2)
+	}
+	function gps() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("geolocalizacion.html?id="+myvar2)
+	}
+	function home() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("readjson.html?myvar="+myvar2)
+	}
+	function perfil2() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+		$.getJSON(url,function(result){
+		console.log(result);
+		$.each(result, function(i, field){
+		var id=field.id;
+		window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+id)
+	});
+	});
+ 
+	}
+</script>
+</head>
+<body onload="initialize()">
+<div data-role="page">
+<div data-role="header">
+	<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+		<a href="" class="button button-clear" onclick="home();">Home</a>
+		<a href="index.html" class="button button-clear" onclick="gps();">Gps</a>
+		<a href="perfil.html" class="button button-clear" onclick="perfil2();">Perfil</a>
+		<a href="index.html" class="button button-clear" onclick="historial();">Historial</a>
+		<a href="index.html" class="button button-clear">Cuenta</a>
+	</div><br><br>
+</div>
+<div data-role="content">
+	
+	<form name="form" action="editar_partido.php" method="post">
+	<table  >
+	<tr>
+		<td >Editar Partido</td>
+		
+	</tr>
+	<tr>
+		<td valign="top" align="right">Deporte:</td>
+		<td align="top" id="deporte" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Pais:</td>
+		<td align="top" id="pais" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Ciudad:</td>
+		<td align="top" id="ciudad" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Nombre Cancha</td>
+		<td align="top" id="nombrecancha" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Direccion Cancha:</td>
+		<td align="top" id="dircancha" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Cuota:</td>
+		<td align="top" id="cuota" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Tipo Moneda:</td>
+		<td align="top" id="tipo_moneda" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Fecha:</td>
+		<td align="top" id="fecha" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Hora:</td>
+		<td align="top" id="hora" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Sexo:</td>
+		<td align="top" id="sexo" align="left"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">Info extra:</td>
+		<td align="top" id="info_extra" align="left"></td>
+	</tr>
+	</table>
+	</form>
+	<div id="map_canvas" style="width:280px; height:380px"></div><br> 
+	<font color="#0000FF"><div id="loglat">Latitud:</div></font>  
+	<font color="#FF0000"><div id="loglong">Longitud:</div></font>  
+	<div id=""><input type="submit" value="Enviar" id="editar" ></div>
+</div>
+<div data-role="footer">
+</div>
+</div>
+
+</body>
+</html>

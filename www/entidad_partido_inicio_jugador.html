@@ -1,0 +1,571 @@
+<?php
+include ("clases.php");
+?>
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<title>
+Entidad Partido
+</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/geturi.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/funciones1.js"></script>
+
+<script>
+	$(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 //alert(id);
+	 var url="http://bahiahorizonte.cl/sm/controller_entidad_partido.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 var local=result[0].nombre;
+	 $("#listview1").append(local);
+	 var visita=result[1].nombre;
+	 $("#listview2").append(visita);
+	 $.each(result, function(i, field){
+	 var id=field.id;
+	 var nombre=field.nombre;
+	 //$("#listview1").append(nombre2);
+	 });
+	 });
+	 });
+	 
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_marcador.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var puntos=field.puntos;
+	 var idequipo=field.equipo_id;
+	 //alert(idequipo);
+	 $("#marc1").append("<input type='text' id='marc3' value="+puntos+" name="+idequipo+"></input>");
+	 });
+	 });
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_marcador_visita.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var puntos=field.puntos;
+	 var idequipo=field.equipo_id;
+	 $("#marc2").append("<input type='text' id='marc4' value="+puntos+" name="+idequipo+"></input>");
+	 });
+	 });
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_nomina_local.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var nombre=field.nombre;
+	 var idjugador=field.id;
+	 var check='cheq';
+	 $("#nominalocal").append("<a href='' onclick='perfil("+idjugador+")'><img border='0' align='center' src='img/perfil.png' width='50' height='50'></a>"+nombre+"<br>");
+	 });
+	 });
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_nomina_visita.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var nombre=field.nombre;
+	 var idjugador=field.id;
+	 var hola="hola";
+	 $("#nominavisita").append("<a href=''   onclick='perfil("+idjugador+")'><img border='0'  align='center' src='img/perfil.png' width='50' height='50'></a>"+nombre+"<br>");
+	 });
+	 });
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 
+	 var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+	 var url3="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+	 $.getJSON(url3,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var idjugador=field.id;
+	 
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_agregar_jugador.php?idpartido="+id+"&idjugador="+idjugador;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var resultado=field.c;
+	 if(resultado == 1)
+	 {
+		 $('#agregar').hide();
+		 $('#agregar2').hide();
+	 }
+	 else
+	 {
+		 $('#restar').hide();
+		 $('#restar2').hide();
+		 
+	 }
+	 //$("#nominalocal").append("<a href=''><img border='0' align='center' src='img/perfil.png' width='50' height='50'></a>"+nombre+"<br>");
+	 });
+	 });
+	 
+	 });
+	 });
+	 
+	 });
+	 
+	 
+	 
+	 $(document).ready(function()
+	 {
+	 
+	 var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+	 var url3="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+	 $.getJSON(url3,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var idjugador=field.id;
+	 
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_restar_jugador.php?idpartido="+id+"&idjugador="+idjugador;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var resultado=field.modo;
+	// alert(resultado);
+	 $('#agregar2').hide();
+	 $('#agregar').hide();
+	 if(resultado == "local")
+	 {
+		  $('#restar2').hide();
+		 
+	 }else{
+		 $('#restar').hide();
+		 
+	 }
+	 //$("#nominalocal").append("<a href=''><img border='0' align='center' src='img/perfil.png' width='50' height='50'></a>"+nombre+"<br>");
+	 });
+	 });
+	 
+	 });
+	 });
+	 
+	 });
+	 
+	 $(document).ready(function()
+	 {
+	 var id = decodeURI(getUrlVars()["id"]);
+	 var url="http://bahiahorizonte.cl/sm/controller_estado_partido_jugador.php?id="+id;//aqui debieeria pasar el id
+	 $.getJSON(url,function(result){
+	 console.log(result);
+	 $.each(result, function(i, field){
+	 var estado=field.estado;
+	 //alert(estado);
+	 $("#estado").append(estado);
+	 if (estado == "cerrado")
+	 {
+		  $('#agregar').hide();
+		  $('#agregar2').hide();
+		  $('#restar').hide();
+		  $('#restar2').hide();
+		  
+		 
+	 }
+	 });
+	 });
+	 });
+	 
+	 
+	
+	$(document).ready(function(){
+		formSubmit()
+	})
+	
+	function formSubmit(){///SEGUIR CON ESTOOOOOOOOOOOOOOOOOOOOOOO
+	
+	$('#marcador').submit(function(e){
+		e.preventDefault()
+		var local = $('#marc3').val()
+		var visita = $('#marc4').val()
+		var idlocal = $('#marc3').attr("name");
+		var idvisita = $('#marc4').attr("name");	
+		alert("Marcador actualizado");
+		var data = 'local='+local+'&visita='+visita+'&idlocal='+idlocal+'&idvisita='+idvisita;
+		//////////////CON JQUERY OBTENER ATRIBUTO ID DEL INPUT Y AHI GUARDAR LA VARIABLE PHP $IDLOCAL Y $IDVISITA
+		$.ajax({
+			url: 'http://bahiahorizonte.cl/sm/insertar_marcador.php',
+			type: 'POST',
+			data:  data,
+			beforeSend: function(){
+				console.log('enviando datos')
+			},
+			success: function(resp){
+				console.log('resp')
+			}
+		})
+	})
+		
+	$('#asistencia').submit(function(e){
+	e.preventDefault()
+	var idpartido = decodeURI(getUrlVars()["id"]);
+
+	$('.checklocal:checked').each(
+	function() {
+		alert("El checkbox con valor " + $(this).val() + " está seleccionado");
+		var selec=$(this).val();
+		var data = 'seleccionado='+selec+'&idpartidos='+idpartido;
+		$.ajax({
+		url: 'http://bahiahorizonte.cl/sm/insertar_asistencia.php',
+		type: 'POST',
+		data:  data,
+		beforeSend: function(){
+			console.log('enviando datos')
+		},
+		success: function(resp){
+			console.log('resp')
+		}
+	})
+		}
+	);
+	
+	//////////////CON JQUERY OBTENER ATRIBUTO ID DEL INPUT Y AHI GUARDAR LA VARIABLE PHP $IDLOCAL Y $IDVISITA
+	
+	})	
+
+	$('#asistencia2').submit(function(e){
+		e.preventDefault()
+		var idpartido = decodeURI(getUrlVars()["id"]);
+
+		$('.checkvisita:checked').each(
+		function() {
+			alert("El checkbox con valor " + $(this).val() + " está seleccionado");
+			var selec=$(this).val();
+			var data = 'seleccionado='+selec+'&idpartidos='+idpartido;
+			$.ajax({
+			url: 'http://bahiahorizonte.cl/sm/insertar_asistencia.php',
+			type: 'POST',
+			data:  data,
+			beforeSend: function(){
+				console.log('enviando datos')
+			},
+			success: function(resp){
+				console.log('resp')
+			}
+		})
+			}
+		);
+		
+		//////////////CON JQUERY OBTENER ATRIBUTO ID DEL INPUT Y AHI GUARDAR LA VARIABLE PHP $IDLOCAL Y $IDVISITA
+		
+	})	
+		
+		$( "#agregar" ).click(function() {
+		alert( "te agregaste a este equipo!" );
+		var id = decodeURI(getUrlVars()["id"]);
+		var url="http://bahiahorizonte.cl/sm/controller_entidad_partido.php?id="+id;
+		
+		 
+		/////////
+		$.getJSON(url,function(result){
+			console.log(result);
+			var idresultado=result[0].id;
+			
+			var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+			var url3="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+			$.getJSON(url3,function(result){
+			console.log(result);
+			$.each(result, function(i, field){
+			var idjugador=field.id;
+			alert(idjugador);
+			var data = 'idpartido='+id+'&idjugador='+idjugador+'&idequipo='+idresultado;
+			$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/agregar_jugador.php',
+				type: 'POST',
+				data:  data,
+				beforeSend: function(){
+					console.log('enviando datos')
+				},
+				success: function(resp){
+					console.log('resp')
+				}
+			})
+			
+			});
+		 });
+			
+		});
+	});
+	
+	$( "#agregar2" ).click(function() {
+		alert( "Te agregaste a este equipo!!!!!" );
+		var id = decodeURI(getUrlVars()["id"]);
+		var url="http://bahiahorizonte.cl/sm/controller_entidad_partido.php?id="+id;
+		/////////
+		$.getJSON(url,function(result){
+			console.log(result);
+			var idresultado=result[1].id;
+			alert(idresultado);
+			
+			var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+			var url3="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+			$.getJSON(url3,function(result){
+			console.log(result);
+			$.each(result, function(i, field){
+			var idjugador=field.id;
+
+			
+			var data = 'idpartido='+id+'&idjugador='+idjugador+'&idequipo='+idresultado;
+			$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/agregar_jugador.php',
+				type: 'POST',
+				data:  data,
+				beforeSend: function(){
+					console.log('enviando datos')
+				},
+				success: function(resp){
+					console.log('resp')
+				}
+			})
+			
+			});
+		 });
+		 
+		});
+		//window.location="entidad_partido_inicio_jugador.php?id="+id;
+	});
+	
+	$( "#restar" ).click(function() {
+		alert( "Te fuiste de este equipo!!!!!" );
+		var id = decodeURI(getUrlVars()["id"]);
+		var url="http://bahiahorizonte.cl/sm/controller_entidad_partido.php?id="+id;
+		/////////
+		$.getJSON(url,function(result){
+			console.log(result);
+			var idresultado=result[0].id;
+			//alert(idresultado);
+			
+			var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+			var url3="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+			$.getJSON(url3,function(result){
+			console.log(result);
+			$.each(result, function(i, field){
+			var idjugador=field.id;
+			
+			var data = 'idpartido='+id+'&idjugador='+idjugador+'&idequipo='+idresultado;
+			$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/restar_jugador.php',
+				type: 'POST',
+				data:  data,
+				beforeSend: function(){
+					console.log('enviando datos')
+				},
+				success: function(resp){
+					console.log('resp')
+				}
+			})
+			
+			});
+		 });
+			
+		});
+		//window.location="entidad_partido_inicio_jugador.php?id="+id;
+	});
+	
+	$( "#restar2" ).click(function() {
+		alert( "Te fuiste de este equipo!!!!!" );
+		var id = decodeURI(getUrlVars()["id"]);
+		var url="http://bahiahorizonte.cl/sm/controller_entidad_partido.php?id="+id;
+		/////////
+		$.getJSON(url,function(result){
+			console.log(result);
+			var idresultado=result[1].id;
+			//alert(idresultado);
+			
+			var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+			var url3="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+			$.getJSON(url3,function(result){
+			console.log(result);
+			$.each(result, function(i, field){
+			var idjugador=field.id;
+			
+			var data = 'idpartido='+id+'&idjugador='+idjugador+'&idequipo='+idresultado;
+			$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/restar_jugador.php',
+				type: 'POST',
+				data:  data,
+				beforeSend: function(){
+					console.log('enviando datos')
+				},
+				success: function(resp){
+					console.log('resp')
+				}
+			})
+			
+			});
+		 });
+			
+		});
+		       
+
+		
+
+
+		
+	});
+	
+	
+		
+	}
+	
+	
+	
+	function fin()
+	{
+		var id = decodeURI(getUrlVars()["id"]);
+		window.locationf="http://localhost/sportmatch/entidad_partido.php?id="+id;
+	}
+	function perfil(idjugador) {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+    window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+idjugador)
+	}
+	function historial() {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+    window.location.assign("historial.html?id="+myvar2)
+	}
+	function gps() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("geolocalizacion.html?id="+myvar2)
+	}
+	function home() {
+		var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+		window.location.assign("readjson.html?myvar="+myvar2)
+	}
+	function perfil2() {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+   
+	
+	var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+	$.getJSON(url,function(result){
+	console.log(result);
+	$.each(result, function(i, field){
+	var id=field.id;
+	window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+id)
+	});
+	});
+ 
+	}
+	function info() {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+	var id = decodeURI(getUrlVars()["id"]);
+	window.location.assign("informacion.html?id="+id+"&myvar2="+myvar2)
+
+	}
+	
+	
+	 
+
+	
+</script>
+</head>
+<body>
+<div data-role="page">
+<div data-role="header">
+	<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+		<a href="" class="button button-clear" onclick="home();">Home</a>
+		<a href="index.html" class="button button-clear" onclick="gps();">Gps</a>
+		<a href="perfil.html" class="button button-clear" onclick="perfil2();">Perfil</a>
+		<a href="index.html" class="button button-clear" onclick="historial();">Historial</a>
+		<a href="index.html" class="button button-clear">Cuenta</a>
+	</div><br><br>
+</div>
+<div data-role="content" data-theme="e">
+
+	<div align="center"><a href="" onclick="info();">Informacion del partido</a></div>
+	<input type="button" value="Actualizar" onclick = "location.reload()" />
+	<div align="center" id ="estado">Estado:</div>
+	
+	<form id="marcador">
+	<div class="ui-grid-a">
+	<div align="center">Marcador (otorgado por admin):</div>
+	<div class="ui-block-a" id="marc1"></div>
+	<div class="ui-block-b" id="marc2"></div>
+	</div>
+	</form>
+
+	
+	
+	<table align="left">
+		<tr align="center">
+		<td ><a href="" ><img border="0"  src="img/escudo.png" width="70" height="70"></a></td>
+		</tr>
+		<tr align="center">
+		<td id="listview1"></td>
+		</tr>
+		<tr align="center">
+		<td ><hr></td>
+		</tr>
+		<form id="asistencia">
+		<tr>
+		<td id="nominalocal"></td>
+		</tr>
+		<tr><td align="center" id="agregar"><img border="0" src="img/agregar.png" width="50" height="50"><td></tr>
+		</tr>
+		<tr><td align="center" id="restar"><img border="0" src="img/restar.png" width="50" height="50"><td></tr>
+		</form>
+	</table>
+	
+	<table align="right">
+		<tr align="center">
+		<td><a href=""><img border="0"  src="img/escudo.png" width="70" height="70"></a></td>
+		</tr>
+		<tr align="center">
+		<td id="listview2"></td>
+		</tr>
+		<tr align="center">
+		<td ><hr></td>
+		</tr>
+		<form id="asistencia2">
+		<tr>
+		<td id="nominavisita"></td>
+		</tr>
+		<tr><td align="center" id="agregar2"><img border="0" src="img/agregar.png" width="50" height="50"><td></tr>
+		<tr><td align="center" id="restar2"><img border="0" src="img/restar.png" width="50" height="50"><td></tr>
+		</form>
+	</table>
+	
+	
+</div>
+<div data-role="footer">
+	
+</div>
+</div>
+
+
+
+
+
+
+	
+
+
+</body>
+</html>

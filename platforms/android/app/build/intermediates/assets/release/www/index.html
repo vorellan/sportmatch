@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+	<title>Login Form</title>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">
+	$(document).ready(function()
+	{
+		
+		$('#form1').submit(function(e) {
+		e.preventDefault();
+			//alert( "Obteniendo valores" );
+			var data = $(this).serializeArray();
+			data.push({name: 'tag', value: 'login'})
+			$.ajax({
+				url: 'http://bahiahorizonte.cl/sm/registro.php',
+				type: 'POST',
+				data:  data,
+				success:  function (response) {
+						//alert(response);
+                        $('span').html(response);
+						
+						if (response == "valido"){
+						//alert("link");
+						var user = $('#username').val();
+						redireccionar(user);
+
+						
+						}
+                }
+			});
+			$.ajax({
+				url: 'readjson.html',
+				type: 'GET',
+				data:  data,
+				success:  function (response) {
+						//alert(response);
+                        $('span').html(response);
+						
+                }
+			});
+		
+			
+		});
+		$('#form2').submit(function(e) {
+		e.preventDefault();
+			//alert( "Obteniendo valores" );
+			var data = $(this).serializeArray();
+			$.ajax({
+				url: 'registro2.php',
+				type: 'POST',
+				data:  data,
+				success:  function (response) {
+						//alert(response);
+                        $('span').html(response);
+						
+                }
+			});
+			
+
+		
+			
+		});
+		
+	});
+	function redireccionar(user){
+//var h="hola";
+	window.location.assign("readjson.html?myvar="+user)
+} 
+
+</script>
+</head>
+
+<body background="img/fondo.jpg">
+
+<div class="login-page">
+<div class="form">
+
+
+<form name="form1" id="form1" class="login-form">
+	<strong>SPORT MATCH</strong>
+	<br>
+	<strong>Iniciar Sesion</strong>
+      <input type="text" placeholder="username" name="username" id="username" />
+      <input type="password" placeholder="password"  name="password2"  />
+      
+	  <input type="submit" value="Entrar" id="registrar" >
+	  <p class="message">Not registered? <a href="#">Create an account</a></p>
+</form>
+<form name="form2" id="form2" class="register-form">
+	<strong>SPORT MATCH</strong>
+	<br>
+	<strong>Registro</strong>
+      <input type="text" placeholder="username" name="username"  />
+      <input type="password" placeholder="password"  name="password2"  />
+	  <input type="nombre" placeholder="nombre"  name="nombre"  />
+	  <input type="deporte1" placeholder="deporte favorito 1"  name="deporte1"  />
+	  <input type="deporte2" placeholder="deporte favorito 2"  name="deporte2"  />
+	  <input type="deporte3" placeholder="deporte favorito 3"  name="deporte3"  />
+	  <input type="edad" placeholder="edad"  name="edad"  />
+	  <input type="sexo" placeholder="sexo"  name="sexo"  />
+	  <input type="pais" placeholder="pais"  name="pais"  />
+	  <input type="ciudad" placeholder="ciudad"  name="ciudad"  />
+	  <input type="submit" value="registrar" id="registrar2" >
+	   <p class="message">Already registered? <a href="#">Sign In</a></p>
+	  
+</form>
+
+</div>
+</div>
+<span>info</span>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <script  src="js/index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="js/geturi.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/cargar.js"></script>
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+ $(document).ready(function()
+ {
+ var perfil = decodeURI(getUrlVars()["perfil"]);
+
+ var url="http://bahiahorizonte.cl/sm/controller_perfil.php?myvar="+perfil;
+ $.getJSON(url,function(result){
+ console.log(result);
+ $.each(result, function(i, field){
+ var id=field.id;
+ var nombre=field.nombre;
+ var deporte=field.deporte1;
+
+ 
+ $("#listview").append(id +"<br>"+ nombre
+ +"<br>"+ deporte);
+ });
+ });
+ });
+ 
+ $(document).ready(function()
+ {
+	var usuario = decodeURI(getUrlVars()["myvar"]);
+	var idperfil = decodeURI(getUrlVars()["perfil"]);
+	var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+usuario;
+	$.getJSON(url,function(result){
+	console.log(result);
+	$.each(result, function(i, field){
+	var id=field.id;
+	if (id != idperfil)
+	{
+		$('#guardar_imagen').hide();
+		$('#subir_imagen').hide();
+	
+	}
+	});
+	});
+ 
+ });
+ 
+	
+ 
+ $(document).ready(function()
+ {
+
+
+ var url="http://bahiahorizonte.cl/sm/controller_foto_jugador.php";
+ $.getJSON(url,function(result){
+ console.log(result);
+ $.each(result, function(i, field){
+ var id=field.id;
+ var perfil = decodeURI(getUrlVars()["perfil"]);
+
+ 
+ $("#foto").append("<a href='perfil.html'><img border='0' align= 'center' src='http://bahiahorizonte.cl/sm/imagenes/"+perfil+".png' width='150' height='150'></a>");
+ });
+ });
+ });
+ 
+ $(document).ready(function()
+ {
+ var myvar = decodeURI(getUrlVars()["myvar"]);
+ var perfil = decodeURI(getUrlVars()["perfil"]);
+ var url="http://bahiahorizonte.cl/sm/controller_perfil_asistencias.php?myvar="+perfil;
+ $.getJSON(url,function(result){
+ console.log(result);
+ $.each(result, function(i, field){
+ var total_partidos=field.c;
+ $("#listview2").append("partidos inscritos:"+total_partidos+"<br>");
+ });
+ });
+ });
+ 
+ $(document).ready(function()
+ {
+ var myvar = decodeURI(getUrlVars()["myvar"]);
+ var perfil = decodeURI(getUrlVars()["perfil"]);
+ var url="http://bahiahorizonte.cl/sm/controller_perfil_presente.php?myvar="+perfil;
+ $.getJSON(url,function(result){
+ console.log(result);
+ $.each(result, function(i, field){
+ var total_partidos=field.c;
+ $("#listview2").append("partidos presentes:"+total_partidos+"<br>");
+ });
+ });
+ });
+ 
+ $(document).ready(function()
+ {
+ var perfil = decodeURI(getUrlVars()["perfil"]);
+ var url="http://bahiahorizonte.cl/sm/controller_perfil_ausente.php?id="+perfil;
+ $.getJSON(url,function(result){
+ console.log(result);
+ $.each(result, function(i, field){
+ var total_partidos=field.c;
+ $("#listview2").append("partidos ausentes:"+total_partidos+"<br>");
+ });
+ });
+ });
+ 
+  $(document).ready(function()
+ {
+ var perfil = decodeURI(getUrlVars()["perfil"]);
+ var url="http://bahiahorizonte.cl/sm/controller_comentarios.php?id="+perfil;
+ $.getJSON(url,function(result){
+ console.log(result);
+ $.each(result, function(i, field){
+ var comentario=field.comentario;
+ $("#listview3").append("comentario:"+comentario+"<br><br>");
+ });
+ });
+ });
+ 
+function editar(id) {
+    window.location.assign("editar_partido.php?id="+id)
+}
+function ver(id) {
+    window.location.assign("entidad_partido_inicio.php?id="+id)
+}
+function eliminar(id) {
+    window.location.assign("eliminar_partido.php?id="+id)
+}
+
+$(document).ready(function()
+{
+	 
+	$( "#editar" ).click(function() {
+		alert( "Comentario enviado" );
+		var comentario = $("textarea#textcomentario").val();
+		//alert(comentario);
+		var comentador = decodeURI(getUrlVars()["myvar"]);
+		var idjugador = decodeURI(getUrlVars()["perfil"]);
+		//alert(comentador);
+		//alert(idjugador);
+		var data = 'comentario='+comentario+'&idcomentador='+comentador+'&idjugador='+idjugador;
+		$.ajax({
+			url: 'http://bahiahorizonte.cl/sm/controller_enviar_comentario.php',
+			type: 'POST',
+			data:  data,
+			beforeSend: function(){
+				console.log('enviando datos')
+			},
+			success: function(resp){
+				console.log('resp')
+			}
+		})
+	});
+	
+});
+function gps() {
+	var myvar2 = decodeURI(getUrlVars()["myvar"]);
+	window.location.assign("geolocalizacion.html?id="+myvar2)
+}
+function home() {
+	var myvar2 = decodeURI(getUrlVars()["myvar"]);
+	window.location.assign("readjson.html?myvar="+myvar2)
+}
+function historial() {
+var myvar2 = decodeURI(getUrlVars()["myvar"]);
+window.location.assign("historial.html?id="+myvar2)
+}
+function perfil() {
+var myvar2 = decodeURI(getUrlVars()["myvar"]);
+var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+$.getJSON(url,function(result){
+console.log(result);
+$.each(result, function(i, field){
+var id=field.id;
+window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+id)
+});
+});
+
+}
+
+ </script>
+</head>
+<body>
+<div data-role="page">
+	<div data-role="header" data-theme="a">
+	<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+		<a href="" class="button button-clear" onclick="home();">Home</a>
+		<a href="index.html" class="button button-clear" onclick="gps();">Gps</a>
+		<a href="perfil.html" class="button button-clear" onclick="perfil();">Perfil</a>
+		<a href="index.html" class="button button-clear" onclick="historial();">Historial</a>
+		<a href="index.html" class="button button-clear">Cuenta</a>
+	</div><br><br>
+	
+	</div>
+	<div data-role="content">
+		Informacion:
+		<div align="center">
+		<div id="foto"></div>
+		
+		</div>
+
+		<form name="frmSubir" id="frmSubir" method="post" enctype="multipart/form-data">
+			<p align="center">Subir imagen:</p>
+			<div id ="subir_imagen"><p><input type="file" name="imagenes" /></p></div>
+			<div id ="guardar_imagen"><p><input type="submit" class="btn_enviar" value="Guardar imagen" /></p></div>
+		</form>
+		<section id="mensaje"></section>
+
+		
+		Informacion:
+		<div class="ui-grid-b" id="listview" align="center"></div>
+		<hr>
+		Asistencias:
+		<div class="ui-grid-b" id="listview2" align="center"></div>
+		<hr>
+		Comentarios:
+		<div class="ui-grid-b" id="listview3" align="center"></div>
+		
+		<form name="myform" action="perfil.html" method="POST">
+		<textarea rows="4" cols="50" id="textcomentario">
+		</textarea>
+		<td align="top" id="dircancha" align="left"></td>
+		</div>
+		<div id="editar"><input type="submit" value="Comentar"> </div>
+		</form>
+		
+	</div>
+	<div data-role="footer"></div>
+</div>
+
+</body>
+</html>

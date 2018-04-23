@@ -1,0 +1,135 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ionic.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/geturi.js"></script>
+<script type="text/javascript">
+ $(document).ready(function()
+ {
+ var myvar2 = decodeURI(getUrlVars()["id"]);
+ var url="http://bahiahorizonte.cl/sm/controller_historial.php?myvar2="+myvar2;
+ $.getJSON(url,function(result){
+ console.log(result);
+ $.each(result, function(i, field){
+ var id=field.partido_id;
+ var pais=field.pais;
+ var deporte=field.deporte;
+ var sexo=field.sexo;
+ var ciudad=field.ciudad;
+ var admin=field.admin;
+ var url2="editar_partido.php";
+ if(myvar2 == admin)
+ {
+ $("#listview").append("<a href=''  onclick='ver("+id+")'>Administrar</a>"+" "+"<a href='' onclick='editar("+id+")'>Editar</a>"+" "+
+ "<a  href=''  onclick='eliminar("+id+")'>Eliminar</a>"+
+ "<br>");
+ }
+ 
+ $("#listview").append(pais +"&nbsp;&nbsp;||&nbsp;&nbsp;"+ deporte 
+ +"&nbsp;&nbsp;||&nbsp;&nbsp;"+ sexo +"&nbsp;&nbsp;||&nbsp;&nbsp;"+ 
+ ciudad+"<a href=''  onclick='ver_jugador("+id+")'>Ver</a>"+"<br>");
+ });
+ });
+ 
+ 
+ 
+ $( "#buscar" ).click(function() {
+		//alert( "Handler for .click() called." );
+		var valor = $('#ciudad').val();
+		/*alert(valor);
+		var data = 'ciudad='+ciudad;
+		$.ajax({
+			url: 'controller_buscar_partido.php',
+			type: 'POST',
+			data:  data,
+			beforeSend: function(){
+				console.log('enviando datos')
+			},
+			success: function(resp){
+				console.log('resp')
+			}
+		})*/
+		
+		var url="http://localhost/sportmatch/controller_buscar_partido.php?valor="+valor;//aqui debieeria pasar el id
+		$.getJSON(url,function(result){
+		console.log(result);
+		$.each(result, function(i, field){
+		var id=field.id;
+		//alert(id);
+		//window.location="http://localhost/sportmatch/readjson.html";
+		$('#listview').hide();
+		$("#listviewedit").append(id);
+		});
+		});
+		
+	});
+ 
+ 
+ });
+function editar(id) {
+    window.location.assign("editar_partido.html?id="+id)
+}
+function ver(id) {
+    window.location.assign("entidad_partido_inicio.php?id="+id)
+}
+function eliminar(id) {
+    window.location.assign("eliminar_partido.php?id="+id)
+}
+function ver_jugador(id) {
+	var myvar2 = decodeURI(getUrlVars()["myvar2"]);
+    window.location.assign("entidad_partido_inicio_jugador.html?id="+id+"&myvar2="+myvar2)
+}
+function ver(id) {
+    window.location.assign("entidad_partido_inicio.html?id="+id)
+}
+function historial() {
+	var myvar2 = decodeURI(getUrlVars()["id"]);
+    window.location.assign("historial.html?id="+myvar2)
+}
+function gps() {
+	var myvar2 = decodeURI(getUrlVars()["id"]);
+    window.location.assign("geolocalizacion.html?id="+myvar2)
+}
+function home() {
+		var myvar2 = decodeURI(getUrlVars()["id"]);
+		window.location.assign("readjson.html?myvar="+myvar2)
+	}
+function perfil() {
+	var myvar2 = decodeURI(getUrlVars()["id"]);
+   
+	
+	var url="http://bahiahorizonte.cl/sm/controller_id_usuario.php?user="+myvar2;
+	$.getJSON(url,function(result){
+	console.log(result);
+	$.each(result, function(i, field){
+	var id=field.id;
+	window.location.assign("perfil.html?myvar="+myvar2+"&perfil="+id)
+	});
+	});
+ 
+}
+ </script>
+</head>
+<body>
+<div data-role="page">
+	<div data-role="header">
+		<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+		<a href="" class="button button-clear" onclick="home();">Home</a>
+		<a href="index.html" class="button button-clear" onclick="gps();">Gps</a>
+		<a href="perfil.html" class="button button-clear" onclick="perfil();">Perfil</a>
+		<a href="index.html" class="button button-clear" onclick="historial();">Historial</a>
+		<a href="index.html" class="button button-clear">Cuenta</a>
+		</div><br><br>
+	</div>
+	<div data-role="content">
+		
+		<div class="ui-grid-b" id="listview" align="center"></div>
+	</div>
+	<div data-role="footer"></div>
+</div>
+
+</body>
+</html>
